@@ -1,0 +1,10 @@
+/** @format */
+
+.moviecard {
+	height: 400px;
+	width: 180px;
+}
+
+.moviecard:hover {
+	transform: scale(1.05);
+}
