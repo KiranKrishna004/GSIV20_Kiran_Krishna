@@ -9,16 +9,11 @@ import { Provider } from "react-redux";
 
 const pageStore = createStore(pageReducer);
 const App = () => {
-	// console.log("page: ", pageStore.getState());
-	// pageStore.dispatch({ type: "ADD_PAGE" });
-	// console.log("page: ", pageStore.getState());
-
 	return (
 		<Provider store={pageStore}>
 			<Router>
 				<Navbar />
 				<Routes>
-					{/* <Route path={data["title"]} element={<RenderImgPage />}></Route> */}
 					<Route path='/movie/:id' element={<RenderImgPage />}></Route>
 					<Route path='/' element={<Home />}></Route>
 				</Routes>
