@@ -1,6 +1,10 @@
 /** @format */
 
 .moviecard {
-	height: 450px;
-	width: 200px;
+	height: 400px;
+	width: 180px;
+}
+
+.moviecard:hover {
+	transform: scale(1.05);
 }
