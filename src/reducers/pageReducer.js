@@ -6,6 +6,8 @@ const pageReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case "ADD_PAGE":
 			return { page: state.page + 1 };
+		case "RESET":
+			return initialState;
 		default:
 			return state;
 	}
