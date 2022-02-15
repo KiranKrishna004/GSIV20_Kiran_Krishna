@@ -1,16 +1,33 @@
 /** @format */
-import { Link, useLocation } from "react-router-dom";
-
+import {
+	Link,
+	useLocation,
+	useSearchParams,
+	createSearchParams,
+} from "react-router-dom";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 const Navbar = () => {
+	const dispatch = useDispatch();
 	const location = useLocation();
+	const [search, setSearch] = useState("");
+	const [searchParams, setSearchParams] = useSearchParams();
+
+	const handleChange = (e) => {
+		setSearch(e.target.value);
+		setSearchParams(createSearchParams({ query: e.target.value }));
+		dispatch({ type: "RESET" });
+	};
 	return (
-		<div className=' w-full border-solid border-b-2 '>
-			<div className='w-full mb-5 mt-3 flex justify-between items-center'>
+		<div className='sticky top-0 bg-white w-full border-solid border-b-2 bg-white'>
+			<div className='w-full mb-5 pt-5 flex justify-between items-center'>
 				{location.pathname === "/" ? (
 					<input
 						type='text'
 						className='rounded ml-3 bg-gray-200 w-1/2'
 						placeholder='Search'
+						value={search}
+						onChange={handleChange}
 					/>
 				) : (
 					<div className='ml-3 text-lg font-bold '>Movie Details</div>

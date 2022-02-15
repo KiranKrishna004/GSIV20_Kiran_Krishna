@@ -2,12 +2,12 @@
 import axios from "axios";
 import MovieCard from "./MovieCard";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-
 const Home = () => {
 	const dispatch = useDispatch();
-
+	const [searchParams, setSearchParams] = useSearchParams();
+	console.log("Params: ", searchParams.get("query"));
 	//Year-Month-Date
 	const todayDate = new Date().toISOString().slice(0, 10);
 
@@ -36,24 +36,30 @@ const Home = () => {
 		};
 	}, []);
 	useEffect(() => {
+		const query = searchParams.get("query");
+		const apiUrl = !query
+			? `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_APIKEY}&page=${page}&primary_release_date.gte=${todayDate}`
+			: `https://api.themoviedb.org/3/search/movie?api_key=${process.env.REACT_APP_APIKEY}&query=${query}&page=${page}`;
 		axios
-			.get(
-				`https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_APIKEY}&page=${page}&primary_release_date.gte=${todayDate}`
-			)
+			.get(apiUrl)
 			.then((response) => {
 				console.log("Promise fulfilled");
-				setResults(results.concat(response.data.results));
+				if (!query) {
+					setResults(results.concat(response.data.results));
+				} else {
+					if (page > 1) {
+						setResults(results.concat(response.data.results));
+					} else {
+						setResults(response.data.results);
+					}
+				}
 				console.log(results);
 			})
 			.catch((e) => {
 				console.log("failed");
 			});
-	}, [page]);
-	// console.log("results: ", results);
-	const handleClick = (e) => {
-		e.preventDefault();
-		dispatch({ type: "ADD_PAGE" });
-	};
+	}, [page, searchParams]);
+
 	return (
 		<div className='flex flex-wrap'>
 			{" "}
